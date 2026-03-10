@@ -18,13 +18,11 @@ def agent():
     
 def RAG():
     from langchain_community.document_loaders import UnstructuredMarkdownLoader #Leitor de markdown
-    from langchain.text_splitter import RecursiveCharacterTextSplitter #Divisor de texto
+    from langchain_text_splitters import RecursiveCharacterTextSplitter #Divisor de texto
     from langchain.embeddings import OpenAIEmbeddings #Embeddings é a transformação de texto em vetores numéricos
-    from langchain.vectorstores import chroma #DB vetorial
+    from langchain_core.vectorstores import chroma #DB vetorial
     from langchain.chat_models import ChatOpenAI 
-    from langchain.chains import RetrievalQA #Recuperação de informação e geração de texto
-
-    agent = agent() 
+ 
     document = UnstructuredMarkdownLoader("documentacao_sistema.MD", mode = "single",strategy = "fast").load() #Carrega o documento markdown
     
     text_splitter = RecursiveCharacterTextSplitter(chunk_size = 600, chunk_overlap = 0) #Divide o texto em pedaços de 600 caracteres sem sobreposição
@@ -51,10 +49,12 @@ def RAG():
         elif "localização" in texto or "Onde fica" in texto or "como chegar" in texto:
             chunk.metadata["categoria"] = "localizacao"
 
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    vectorstore = chroma.Chroma.from_documents(documents = chunks, embedding = embeddings, persist_directory="./chroma_db") 
         
 
         
-
+RAG()
 
 
 
