@@ -6,55 +6,55 @@ def load_api_key(): #Puxar a Key do arquivo .env
     if not api_key:
         raise ValueError("API_KEY não encontrada no arquivo .env")
     return api_key
-
-def agent():
-    from langchain.chat_models import ChatOpenAI
-    ChatOpenAI(model="gpt-3.5-turbo", #Modelo sendo utilizado
-            temperature = 0.2, #Temperatura é a "criatividade" do modelo. 
-            api_key=load_api_key,
-            System_prompt='''Você é um assistente virtual que tem como função ajudar os usuários a realizar fluxos dentro de um sistema chamado SisAmbientes, utilizado pelas recepcionistas do Tribunal de Contas da União.
-                Você deve lembrar que não pode realizar o fluxo pelo usuário, não podendo realizar uma reserva, por exemplo.''',
-            name = "SisAgente")
     
 def RAG():
-    from langchain_community.document_loaders import UnstructuredMarkdownLoader #Leitor de markdown
-    from langchain_text_splitters import RecursiveCharacterTextSplitter #Divisor de texto
-    from langchain.embeddings import OpenAIEmbeddings #Embeddings é a transformação de texto em vetores numéricos
-    from langchain_core.vectorstores import chroma #DB vetorial
-    from langchain.chat_models import ChatOpenAI 
- 
-    document = UnstructuredMarkdownLoader("documentacao_sistema.MD", mode = "single",strategy = "fast").load() #Carrega o documento markdown
+    from langchain_markitdown import BaseMarkitdownLoader
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+    from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+    from langchain_core.prompts import ChatPromptTemplate
+    from langchain_community.vectorstores import InMemoryVectorStore
+    from langchain_core.output_parsers import StrOutputParser
+
+    loader = BaseMarkitdownLoader("documentacao_sistema.MD") 
+    documents = loader.load()
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=100,
+        separators=["\n\n", "\n", " ", ""]
+    )
+
+    chunks = splitter.split_documents(documents)
+    embeddings_model = OpenAIEmbeddings(model="text-embedding-3-small", openai_api_key=load_api_key())
+
+    embeddings_model.embed_query()
+
+    vectorstore = InMemoryVectorStore.from_documents(chunks, embeddings_model)
+
+    query = input("Digite sua pergunta: ")
+
+    retriever = vectorstore.as_retriever(search_kwargs={"k":2})
+
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", "Você é um assistente do SisAmbientes, sistema do Tribunal de Contas da União, que tem como objetivo auxiliar os usuários a entenderem para que serve a parte de recepção, e como realizar fluxos para determinadas tarefas. Você deve lembrar que não pode realizar os fluxos pelo usuário, podendo assim, apenas orientá-lo sobre como realizar as tarefas desejadas que forem solicitadas."),
+        ("human", "{query}")
+    ])
+
+    llm = ChatOpenAI(model="gpt-4.1-nano", 
+                     openai_api_key=load_api_key(),
+                     temperature=0.2,
+                     )
     
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 600, chunk_overlap = 0) #Divide o texto em pedaços de 600 caracteres sem sobreposição
-    chunks = text_splitter.split_documents(document) 
+    llm.invoke = (query)
 
-    for chunk in chunks:
-        texto = chunk.page_content.lower()
+    chain = prompt | llm | StrOutputParser()
+    response = retriever.invoke(query) 
+    context = "\n\n".join([doc.page_content for doc in response])
+    
 
-        if "reserva" in texto or "reservar" in texto:
-            chunk.metadata["categoria"] = "reserva"
+    
 
-        elif "cadastro" in texto or "cadastrar" in texto:
-            chunk.metadata["categoria"] = "cadastro"
-
-        elif "consulta" in texto:
-            chunk.metadata["categoria"] = "consulta"
-
-        elif "cancelamento" in texto or "cancelar" in texto:
-            chunk.metadata["categoria"] = "cancelamento"   
-
-        elif "alteração" in texto:
-            chunk.metadata["categoria"] = "alteracao"
-
-        elif "localização" in texto or "Onde fica" in texto or "como chegar" in texto:
-            chunk.metadata["categoria"] = "localizacao"
-
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-    vectorstore = chroma.Chroma.from_documents(documents = chunks, embedding = embeddings, persist_directory="./chroma_db") 
-        
+     
 
         
-RAG()
-
 
 
