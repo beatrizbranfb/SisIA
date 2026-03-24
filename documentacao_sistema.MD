@@ -83,6 +83,24 @@
     - 4. • O botão "Check-out" permite liberar o espaço antecipadamente quando a reunião terminar antes
     - 5. • Espaços liberados antecipadamente ficam disponíveis imediatamente para novas reservas
 
+### 2.3.7. Reserva Geral (Confirmação)
+- É uma janela que possui as informações para uma nova reserva, existem informações estáticas e informações para serem preechidas, são elas:
+    - 1. Cabeçalho: Possui o tipo de ambiente, a data da reserva e o status "Confirmação Imediata".
+    - 2. Ambiente Selecionado: Possui as informações detalhadas do ambiente, Localização, nome e capacidade máxima.
+    - 3. Informações da Reserva: Unidade Demandante, Colaborador Responsável, E-mail do Responsável, Telefone do Responsável, onde todos os dados do responsável são transferidos para o usuário que está criando a reserva.
+    - 4. Data e Horário: Informações à serem preenchidas, os campos são: Data Início, Hora Início e Hora Fim, variando com o tipo de regras de cada ambiente. São campos obrigatórios
+    - 5. Detalhes da Resreva: Informações à serem preenchidas, Finalidade da Reserva e Observações. São Campos Opcionais.
+    - 6. Alguns outros campos podem aparecer, à depender do tipo de ambiente sendo obrigatórios ou opcionais.
+- Logo abaixo estão 2 botões:
+    - 1. Cancelar: Cancela a criação da reserva.
+    - 2. Prosseguir para a confirmação: Abre a janela de Confirmar Reserva.
+
+### 2.3.8. Janela de Confirmar Reserva
+- É uma janela com as informações da reserva, possui as informações de local, capacidade máxima, detalhes da reserva e colaborador responsável. Logo abaixo existem 3 botões:
+    - 1. Voltar e Editar (Botão branco): Volta para a tela anterior, "Reserva Geral (Confirmação)" para editar a reserva.
+    - 2. Voltar para a consulta e reserva (Botão branco): Fecha a janela e volta para  tela de "Painel de Reservas".
+    - 3. Confirmar (Botão Azul): Finaliza a reserva e redireciona para a tela de "Minhas Reservas"
+
 
 # 3. Fluxos de Uso do Sistema
 
@@ -129,3 +147,30 @@
 
 ### 3.1.13. Recepcionista Edita Observação na reserva
 - Dentro da caixa de cards de reserva são exibidos os cards de reserva do dia, localiza a reserva que deseja editar a observação, clica no botão de Observação, uma janela com um campo texto para adicionar a observação é aberta, o usuário altera a observação e clica em (Botão para salvar Observação), o sistema salva a observação e passa a exibir entre as colunas de Status e Ações um caixa de texto com o fundo azul descrevendo a observação já alterada.
+
+### 3.1.13. Recepcionista Cria Reserva no Balcão, Fluxo Completo
+- O usuário precisa fazer uma reserva com alguém presencialmente, usuário clica no botão "Nova Reserva(Presencial)", janela com opção de "Escolha o ambiente para cadastrar reserva" aparece, o usuário seleciona um ambiente, clica no botão "Reservar (Azul)", janela "Reserva Geral (Confirmação)" é aberta, o usuário preenche os campos obrigatórios e/ou opcionais, clica no botão "Prosseguir para Confirmação (Azul)", Janela de "Confirmar Reserva" é aberta, usuário clica no botão "Confirmar Reserva (Azul)", o sistema salva a reserva e redireciona o usuário para a página de Minhas Reservas.
+
+### 3.1.14. Recepcionista Cria Reserva no Balcão, Fluxo Cancelar etapa 1
+- O usuário precisa fazer uma reserva com alguém presencialmente, usuário clica no botão "Nova Reserva(Presencial)", janela com opção de "Escolha o ambiente para cadastrar reserva" aparece, o usuário seleciona um ambiente, clica no botão "Cancelar (Branco)", a janela é fechada e retorna ao painel de recepção.
+
+### 3.1.15. Recepcionista Cria Reserva no Balcão, Fluxo Cancelar etapa 2
+- O usuário precisa fazer uma reserva com alguém presencialmente, usuário clica no botão "Nova Reserva(Presencial)", janela com opção de "Escolha o ambiente para cadastrar reserva" aparece, o usuário seleciona um ambiente, clica no botão "Reservar (Azul)", janela "Reserva Geral (Confirmação)" é aberta, o usuário preenche ou não os campos obrigatórios e/ou opcionais, clica no botão "Cancelar (Branco)", a janela é fechada e retorna ao painel de recepção.
+
+### 3.1.16. Recepcionista Cria Reserva no Balcão, Fluxo Cancelar etapa 3
+- O usuário precisa fazer uma reserva com alguém presencialmente, usuário clica no botão "Nova Reserva(Presencial)", janela com opção de "Escolha o ambiente para cadastrar reserva" aparece, o usuário seleciona um ambiente, clica no botão "Reservar (Azul)", janela "Reserva Geral (Confirmação)" é aberta, o usuário preenche os campos obrigatórios e/ou opcionais, clica no botão "Prosseguir para Confirmação (Azul)", o usuário clica no botão "Voltar para a consulta e reserva (Branco)", a janela é fechada e retorna ao painel de recepção.
+
+### 3.1.16. Recepcionista Cria Reserva no Balcão, Fluxo Editar etapa 3
+- O usuário precisa fazer uma reserva com alguém presencialmente, usuário clica no botão "Nova Reserva(Presencial)", janela com opção de "Escolha o ambiente para cadastrar reserva" aparece, o usuário seleciona um ambiente, clica no botão "Reservar (Azul)", janela "Reserva Geral (Confirmação)" é aberta, o usuário preenche os campos obrigatórios e/ou opcionais, clica no botão "Prosseguir para Confirmação (Azul)", o usuário clica no botão "Voltar e Editar (Branco)", o sistema redireciona para a janela "Reserva Geral (Confirmarção)" e a partir daqui outros fluxos que envolvam esta tela podem acontecer, incluindo este próprio.
+
+### 3.1.17. Recepcionista Alterna Para Visualização em Calendário.
+- O usuário clica no seletor de Tabela ou Calendário e seleciona calendário, o botão ficará azul e com a bolinha na direita, o sistema exibirá o Calendário de Reservas da Semana, exibindo todas as reservas da semana logo acima dos cards de reserva.
+
+### 3.1.17.1. Recepcionista Navega Pelo Calendário.
+- O usuário clica nas setas do calendário, para a esquerda ele volta uma semana e para direita ele avança uma semana no tempo.
+
+### 3.1.17.2. Recepcionista Navega Pelo Calendário e Retorna Para a Data Atual.
+- O usuário clica nas setas do calendário, em algum ponto ele resolve ver as reservas do dia atual, usuário clica no botão "Semana Atual (Branco), o sistema exibe o calendário mostrando a data atual.
+
+### 3.1.17.3. Recepcionista Alterna Para Visualização em Tabela.
+- Com o seletor de Tabela ou Calendário em calendário, o usuáro clica novamente e alterna para modo tabela, o sistema deixará de exibir o Calendário de Reservas da Semana.
