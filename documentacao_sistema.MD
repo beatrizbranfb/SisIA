@@ -23,45 +23,109 @@
         - O botão redireciona para uma página que descreve as regras gerais que cada ambiente do sistema possui.
     - 2. -> Acesso rápido:
         - O botão redireciona para a página de consulta e reserva de ambientes geral do sistema, acessível para todos os perfis de usuário.
+
 ## 2.3. Itens da Página Recepção
-### 2.3.1 Botão Nova Reserva
-- Botão Localizado na parte superior direita, logo abaixo do Painel Superior, ao clicar a Janela de Escolha de ambiente para cadastrar reserva é aberta. Esta janela possui:
+
+### 2.3.1 Botão Nova Reserva Presencial
+- Botão Localizado na parte superior direita com o horário e data do dia ao lado, logo abaixo do Painel Superior, ao clicar a Janela de Escolha de ambiente para cadastrar reserva é aberta. Esta janela possui:
     - 1. Botão "X": Localizado na parte superior direita da janela, ao clicar a janela é fechada.
     - 2. Botão "Cancelar": Localizado na parte inferior direita da janela, ao clicar a janela é fechada.
     - 3. Seletor "Ambiente": Localizado no centro da janela, ao clicar aparece uma lista de ambientes dos quais apenas um pode ser selecionado.
     - 4. Botão "Reservar": Localizado na parte inferior direita da janela, existem 2 comportamentos ao clicar:
         - 1. Seletor "Ambiente" não selecionado: É exibida uma janela de erro na tela
         - 2. Seletor de "Ambiente" selecionado: A janela "Reserva Geral (Confirmação)" é aberta.
+### 2.3.2. Seletor de Calendário e Tabela
+- Localizado na lateral superior Esquerda, abaixo do título "Painel de Recepção", é um botão do tipo Toggle (Alternar) onde se pode escolher entre "Tabela" ou "Calendário".
+    - 1. Tabela: A tela segue sem alteração da visualização inicial.
+    - 2. Calendário: Aparece na tela um calendário com as reservas da semana.
+    
+#### 2.3.2.1 Calendário de Reservas da Semana:
+- 
 
-### 2.3.2 Caixa de Informações Recepção
-- Localizada no centro da página, logo abaixo do botão nova reserva, possui orientações sobre o painel de recepção, as quais são:
-    - 1. "Como funciona o Painel de Recepção
-    - 2. Nova Reserva Presencial: Use quando alguém chegar presencialmente para reservar um espaço
-    - 3. Check-in: Clique em "Compareceu" quando o responsável chegar no horário agendado
-    - 4. Ausência: Clique em "Não Compareceu" se a pessoa não aparecer - isso libera o espaço automaticamente
-    - 5. Check-out: Libere o espaço antecipadamente quando a reunião terminar antes do previsto"
+### 2.3.3. Busca de Reserva:
+- Localizado no lado direito superior, logo abaixo do botão Nova Reserva Presencial, possui 2 campos que podem ou não ser preenchidos:
+    - 1. Buscar por responsável: Deve ser digitado o nome do responsável pela reserva.
+    - 2. Filtro por ambiente, ao clicar se abre uma seleção onde se deve escolher o ambiente pelo qual se quer filtrar.
 
-### 2.3.3. Filtros Recepção
+### 2.3.4. Filtros Recepção
 - Localizados centralizados na tela, logo abaixo da Caixa de Informações Recepção, possui 4 caixas de filtros, com o o layout de o número de reservas referentes à aquele filtro e logo abaixo o nome do filtro, sendo elas:
     - 1. Total de Reservas: Localizado na primeira posição da esquerda, ao ser clicado filtra as reservas do dia para todas, mostra o resultado da união de todos os outros filtros.
     - 2. Aguardando Check-in: Localizado na segunda posição da esquerda para a direita, ao ser clicado mostra as reservas que possuem status "Aguardando Check-in".
     - 3. Em uso: Localizado na terceira posição da esquerda para a direita, ao ser clicado mostra as reservas que possuem status "Em uso".
     - 4. Finalizadas: Localizado na quarta posição da esquerda para a direita, ao ser clicado mostra as reservas que possuem status "Finalizadas".
-- Logo abaixo das 4 caixas na parte direita existe um filtro seletor que por padrão possui o nome "Todos os ambientes", ao ser clicado mostra uma lista de ambientes para ser selecionado, ao selecionar a página mostra as reservas relacionadas apenas à aquele ambiente. Este filtro pode ser combinado com as caixas de filtro.
+
+### 2.3.5. Caixa de Cards de Reserva:
+- Localizado no centro da página, logo abaixo dos filtros, possui um título com a data atual + "Todas as Reservas" e o número de reservas do dia e logo abaixo do mesmo diversos cards que representam cada reserva. Os cards são divididos em 3 colunas:
+    - 1. Reserva: Possui o nome do ambiente reservado, nome e foto do teams do responsável pela reserva, horário reservado e, caso exista, horário do check-in e check-out.
+    - 2. Status: Possui um dos seguintes status relacionado a reserva: Check-in Confirmado (Fundo do card fica verde), Aguardando Check-in (Fundo do card branco) e Finalizado (Fundo do card fica cinza).
+    - 3. Ações: Possui 3 ou 2 botões clicáveis pelo usuário, variando pelo status da reserva.
+
+#### 2.3.5.1. Cards de Reserva
+- Localizado dentro da Caixa de Cards de Reserva, os cards ficam empilhados um em cima do outro, em formato de lista, entre as colunas Status e Ações existe uma caixa azul de Observação que pode ou não aparecer, dependendo se foi cadastrada uma observação ou não na reserva, os botões de Ações se modificam a depender do status da reserva da seguinte forma:
+##### 2.3.5.1.1. Botões Card de Reserva com Status Aguardando Check-in
+- 1. Check-in: Botão possui o ícone de um usuário, o fundo verde e um ícone de check, ao clicar o status da reserva e alterado para Check-in Confirmado.
+- 2. Não compareceu: Botão possui o ícone de um usuário, fundo vermelho e um ícone de check, ao clicar a reserva é cancelada.
+- 3. Observação: Botão possui o ícone de um balão de fala com fundo cinza, ao clicar se abre uma caixa para adicionar ou editar uma observação feita à respeito da reserva, caso exista uma observação já feita uma bolinha azul aparece em cima do ícone.
+##### 2.3.5.1.2. Botões Card de Reserva com Status Check-in Confirmado
+- 1. Check-out: Botão possui o ícone de uma porta de saída e o fundo azul, ao clicar o status da reserva e alterado para Finalizado.
+- 2. Desfazer: Botão possui o ícone de uma seta circular e fundo laranja, ao clicar o status da reserva volta para Aguardando Check-in.
+- 3. Observação: Botão possui o ícone de um balão de fala com fundo cinza, ao clicar se abre uma caixa para adicionar ou editar uma observação feita à respeito da reserva, caso exista uma observação já feita uma bolinha azul aparece em cima do ícone.
+##### 2.3.5.1.3. Botões Card de Reserva com Status Finalizado
+- 1. Desfazer: Botão possui o ícone de uma seta circular e fundo laranja, ao clicar o status da reserva volta para Check-in Confirmado.
+- 2. Observação: Botão possui o ícone de um balão de fala com fundo cinza, ao clicar se abre uma caixa para adicionar ou editar uma observação feita à respeito da reserva, caso exista uma observação já feita uma bolinha azul aparece em cima do ícone.
+
+
+### 2.3.6. Caixa de Informações Recepção
+- Localizada no centro da página, logo abaixo dos cards de reserva, possui orientações sobre o painel de recepção, as quais são:
+    - 1. • O sistema envia notificação automática via Teams 30 minutos antes da reserva
+    - 2. • Clique em "Compareceu" quando o responsável chegar na recepção para confirmar o check-in
+    - 3. • Clique em "Não Compareceu" se a pessoa não aparecer no horário - isso libera o espaço
+    - 4. • O botão "Check-out" permite liberar o espaço antecipadamente quando a reunião terminar antes
+    - 5. • Espaços liberados antecipadamente ficam disponíveis imediatamente para novas reservas
 
 
 # 3. Fluxos de Uso do Sistema
-## 3.1. Usuário no total de Reservas
-- Usuário abre o sistema, clica no botão painel superior Recepção e é redirecionado para a página de Recepção, na página são exibidas todas as reservas do dia, usuário clica na caixa do filtro "Total de Reservas", a página exibe todas as reservas do dia.
 
-## 3.2 Usuário clica no Aguardando Check-in
-- Usuário abre o sistema, clica no botão painel superior Recepção e é redirecionado para a página de Recepção, na página são exibidas todas as reservas do dia, usuário clica na caixa do filtro "Aguardando Check-in", a página exibe todas as reservas do dia com status "Aguardando Check-in".
+-----
 
-## 3.3 Usuário clica no Em uso
-- Usuário abre o sistema, clica no botão painel superior Recepção e é redirecionado para a página de Recepção, na página são exibidas todas as reservas do dia, usuário clica na caixa do filtro "Em uso", a página exibe todas as reservas do dia com status "Em uso".
+## 3.1. Fluxos Recepcionista 
+- Usuário abre o sistema, clica no botão painel superior Recepção e é redirecionado para a página de Recepção, a partir daqui os fluxos subsequentes se iniciam. Ressalatando que os diferentes os filtros e as buscas podem ser utilizados em conjunto. Nesta seção entende-se por usuário os recepcionistas que utilizam o sistema.
 
-## 3.4 Usuário clica no Finalizadas
-- Usuário abre o sistema, clica no botão painel superior Recepção e é redirecionado para a página de Recepção, na página são exibidas todas as reservas do dia, usuário clica na caixa do filtro "Finalizadas", a página exibe todas as reservas do dia com status "Finalizadas".
+### 3.1.1. Recepcionista clica no filtro total de Reservas
+- São exibidas todas as reservas do dia, usuário clica na caixa do filtro "Total de Reservas", a página exibe todas as reservas do dia.
 
-## 3.5 Usuário clica no Filtro de todos os ambientes
-- Usuário abre o sistema, clica no botão painel superior Recepção e é redirecionado para a página de Recepção, na página são exibidas todas as reservas do dia, usuário clica no filtro seletor "Todos os ambientes" e seleciona um ambiente, a página exibe todas as reservas relacionadas à aquele ambiente.
+### 3.1.2. Recepcionista clica no filtro Aguardando Check-in
+- São exibidas todas as reservas do dia, usuário clica na caixa do filtro "Aguardando Check-in", a página exibe todas as reservas do dia com status "Aguardando Check-in".
+
+### 3.1.3. Recepcionista clica no filtro Em uso
+- São exibidas todas as reservas do dia, usuário clica na caixa do filtro "Em uso", a página exibe todas as reservas do dia com status "Em uso".
+
+### 3.1.4. Recepcionista clica no filtro Finalizadas
+- São exibidas todas as reservas do dia, usuário clica na caixa do filtro "Finalizadas", a página exibe todas as reservas do dia com status "Finalizadas".
+
+### 3.1.5. Recepcionista clica na Busca de todos os ambientes
+- São exibidas todas as reservas do dia, usuário clica no filtro seletor "Todos os ambientes" e seleciona um ambiente, a página exibe todas as reservas relacionadas à aquele ambiente.
+
+### 3.1.6. Recepcionista clica na Busca por responsável
+- São exbidas todas as reservas do dia, usuário clica no campo "Buscar por Responsável" e digita o nome da pessoa que ele deseja saber sobre as reservas, a página exibe as reservas relacionadas à aquele usuário.
+
+### 3.1.7. Recepcionista faz Check-in na reserva
+- Dentro da caixa de cards de reserva são exibidos os cards de reserva do dia, o usuário verifica as reservas com status "Aguardando Check-in", localiza a reserva que deseja modificar, clica no botão de Check-in, o usuário entrega a chave para o responsável pela reserva e o sistema atualiza o status da reserva para "Check-in confirmado".
+
+### 3.1.8. Recepcionista faz Check-out na reserva
+- Dentro da caixa de cards de reserva são exibidos os cards de reserva do dia, o usuário verifica as reservas com status "Check-in confirmado", localiza a reserva que deseja modificar, clica no botão de Check-out, o usuário recebe a chave do responsável pela reserva e o sistema atualiza o status da reserva para "Finalizado".
+
+### 3.1.9. Recepcionista Registra Ausência na reserva
+- Dentro da caixa de cards de reserva são exibidos os cards de reserva do dia, o usuário verifica as reservas com status "Aguardando Check-in" cujo o horário já passou, a depender das regras definidas pelo gestor do ambiente o tempo de tolerância pode mudar isto fica a cargo de cada gestor, usuário clica no botão de Não Compareceu, o sistema atualiza o status da reserva para "Finalizado" e cancela a reserva.
+
+### 3.1.10. Recepcionista Desfaz Check-in na reserva
+- Dentro da caixa de cards de reserva são exibidos os cards de reserva do dia, o usuário verifica as reservas com status "Check-in confirmado", localiza a reserva que deseja modificar, clica no botão de Desfazer, o sistema altera o status da reserva para "Aguardando Check-in"
+
+### 3.1.11. Recepcionista Desfaz Check-out na reserva
+- Dentro da caixa de cards de reserva são exibidos os cards de reserva do dia, o usuário verifica as reservas com status "Finalizado", localiza a reserva que deseja modificar, clica no botão de Desfazer, o sistema altera o status da reserva para "Check-in Confirmado"
+
+### 3.1.12. Recepcionista Adiciona Observação na reserva
+- Dentro da caixa de cards de reserva são exibidos os cards de reserva do dia, localiza a reserva que deseja adicionar observação, clica no botão de Observação, uma janela com um campo texto para adicionar a observação é aberta, o usuário digita a observação que deseja adicionar e clica em (Botão para salvar Observação), o sistema salva a observação e passa a exibir entre as colunas de Status e Ações um caixa de texto com o fundo azul descrevendo a observação.
+
+### 3.1.13. Recepcionista Edita Observação na reserva
+- Dentro da caixa de cards de reserva são exibidos os cards de reserva do dia, localiza a reserva que deseja editar a observação, clica no botão de Observação, uma janela com um campo texto para adicionar a observação é aberta, o usuário altera a observação e clica em (Botão para salvar Observação), o sistema salva a observação e passa a exibir entre as colunas de Status e Ações um caixa de texto com o fundo azul descrevendo a observação já alterada.
