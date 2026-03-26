@@ -1,113 +1,58 @@
+import os
+from dotenv import load_dotenv
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_core.vectorstores import InMemoryVectorStore
+from langsmith import traceable
 from langchain_huggingface import HuggingFaceEmbeddings
 
+load_dotenv()
 
 class Core:
-
-    def load_api_key(): 
-        import dotenv 
-        import os
-        dotenv.load_dotenv()
-        api_key = os.getenv("API_KEY")
-        if not api_key:
-            raise ValueError("API_KEY não encontrada no arquivo .env")
-        return api_key
-
-    def load_api_key_pc(): 
-        import dotenv
-        import os
-        dotenv.load_dotenv()
-        api_key_pc = os.getenv("API_KEY_PC")
-        if not api_key_pc: 
-            raise ValueError("API_KEY_PC não encontrada no arquivo .env")
-        return api_key_pc
     
-    def Documentation():
-        from langchain_community.document_loaders import PyPDFLoader
-        from langchain_text_splitters import RecursiveCharacterTextSplitter, CharacterTextSplitter
+    class Documentation():
+        def __init__(self):
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            pdf_path = os.path.join(current_dir, "documentacao_v1.pdf")
+            loader = PyPDFLoader(pdf_path)
+            docs = loader.load()
+            splitter = RecursiveCharacterTextSplitter(
+                chunk_size=1000,
+                chunk_overlap=100
+            )
+            doc_splits = splitter.split_documents(docs)
+            embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
-        loader = PyPDFLoader("documentacao_v1.pdf")
-        documents = loader.load()
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=512,
-            chunk_overlap=50,
-            separators=["\n\n", "\n", " ", ""]
-        )
-
-        chunks = splitter.split_documents(documents)
+            vectorstore = InMemoryVectorStore.from_documents(
+                documents=doc_splits,
+                embedding=embedding_model 
+            )
+            self.retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
         
-    def RAG():
-        from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-        from langchain_text_splitters import CharacterTextSplitter
-        from langchain_core.prompts import ChatPromptTemplate
-        from langchain_community.vectorstores import InMemoryVectorStore
-        from langchain_core.output_parsers import StrOutputParser
-        from langchain_huggingface import HuggingFaceEmbeddings
-        from langchain_pinecone import PineconeVectorStore
-        from pinecone import Pinecone
+    class RAG():
 
-        chunks = Core.Documentation()
-        embeddings_model = OpenAIEmbeddings(model="text-embedding-3-small", openai_api_key=Core.load_api_key())
-
-        embeddings_model.embed_query()
-
-        vectorstore = InMemoryVectorStore.from_documents(chunks, embeddings_model)
-
-        query = input("Digite sua pergunta: ")
-
-        retriever = vectorstore.as_retriever(search_kwargs={"k":2})
-
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", "Você é um assistente do SisAmbientes, sistema do Tribunal de Contas da União, que tem como objetivo auxiliar os usuários a entenderem para que serve a parte de recepção, e como realizar fluxos para determinadas tarefas. Você deve lembrar que não pode realizar os fluxos pelo usuário, podendo assim, apenas orientá-lo sobre como realizar as tarefas desejadas que forem solicitadas."),
-            ("human", "{query}")
-        ])
-
-        llm = ChatOpenAI(model="gpt-4.1-nano", 
-                        openai_api_key=Core.load_api_key(),
-                        temperature=0.2,
-                        )
+        def __init__(self):
+            self.doc_system = Core.Documentation()
+            self.llm = ChatOpenAI(
+                model="gpt-4o-mini", 
+                temperature=0.4, 
+                api_key=os.getenv("API_KEY")
+            )
         
-        llm.invoke = (query)
-
-        chain = prompt | llm | StrOutputParser()
-        response = retriever.invoke(query) 
-        context = "\n\n".join([doc.page_content for doc in response])
-
-        token_splitter = CharacterTextSplitter.from_tiktoken_encoder(encoding_name="cl100k_base", chunk_size=1000, chunk_overlap=100)
-        token_pieces = token_splitter.split_text(context)
-
-        hf_embeddings_model = HuggingFaceEmbeddings(model="intfloat/multilingual-e5-small")
-        hf_embeddings = hf_embeddings_model.embed_documents(token_pieces)
-
-    
-    def PineCone():
-        from langchain_pinecone import PineconeVectorStore
-        from pinecone import Pinecone
-
-        pc = Pinecone(api_key=Core.load_api_key_pc())
-        pc_vector_store = PineconeVectorStore(
-            host = "https://rag-sisia-60c393t.svc.aped-4627-b74a.pinecone.io",
-            api_key = Core.load_api_key_pc(),
-            embedding=HuggingFaceEmbeddings(model="intfloat/multilingual-e5-small")
-        )
-        
-
-
-
-#emb_tokenizer = AutoTokenizer.from_pretrained("intfloat/multilingual-e5-small")
-#emb_model = AutoModel.from_pretrained("intfloat/multilingual-e5-small")
-#hf_splitter = CharacterTextSplitter.from_hf_tokenizer(emb_tokenizer, chunk_size=1000, chunk_overlap=100)
-#hf_pieces = hf_splitter.split_text(context)
-#from langchain_experimental.text_splitter import SemanticChunker
-#from langchain_openai.embeddings import OpenAIEmbeddings
-#semantic_openai_splitter = SemanticChunker(OpenAIEmbeddings())
-
-
-        
-
-        
-
-        
-
+        @traceable()
+        def rag_bot(self, question: str) -> dict:
+            docs = self.doc_system.retriever.invoke(question)
+            docs_string = "\n".join(doc.page_content for doc in docs)
             
+            instructions = f"""Você é um agente que serve para auxiliar com dúvidas relacionadas ao sistema de reservas SisAmbientes do Tribunal de Contas da União. Ele deve falar de forma fácil de entender, e que não gere dúvidas posteriores, sendo o mais claro possível. Ele deve ser cordial, considerando que está sendo utilizado para um Tribunal. A linguagem utilizada não precisa ser complexa, mas deve obrigatoriamente ser esclarecedora para as dúvidas que foram direcionadas a ele.
+    Ele não pode fazer o fluxo para a pessoa que está solicitando a ajuda, devendo informar a ela que ele só pode auxiliar em como a pessoa pode realizar o que deseja, não podendo realizar reservas pelo solicitante, por exemplo. 
+    Qualquer dúvida que não seja relacionada ao SisAmbientes na parte de recepção, deve ser informada que você não pode auxiliar com isso, se restringindo apenas em ajudar no sistema.
+            Documentação: {docs_string}"""
+            
+            ai_msg = self.llm.invoke([
+                {"role": "system", "content": instructions},
+                {"role": "user", "content": question},
+            ])
 
-
+            return {"answer": ai_msg.content, "docs": docs}
