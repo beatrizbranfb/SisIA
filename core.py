@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 from langsmith import traceable
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -34,10 +34,11 @@ class Core:
 
         def __init__(self):
             self.doc_system = Core.Documentation()
-            self.llm = ChatOpenAI(
-                model="gpt-4o-mini", 
-                temperature=0.4, 
+            self.llm = ChatGoogleGenerativeAI(
+                model="gemini-3-flash-preview",
+                temperature=0.2,
                 api_key=os.getenv("API_KEY")
+
             )
         
         @traceable()
